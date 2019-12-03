@@ -1,3 +1,5 @@
 chunks/*
 output/*
 sample.txt
+__pycache__
+uploads/
