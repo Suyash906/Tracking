@@ -3,3 +3,5 @@ output/*
 sample.txt
 __pycache__
 uploads/
+shared.pkl
+*.pyc

@@ -3,7 +3,7 @@ from fileObject import fileObject
 import pickle
 import time
 # constant chunk size
-chunksize = 10000
+chunksize = 1000
 
 def readSharedDictionary():
     try:
@@ -25,9 +25,10 @@ def writeToSharedDictionary(f):
     except IOError:
         return 0
 
-def split(source, dest_folder):
+def split(source):
     f = fileObject(source)
     # Make a destination folder if it doesn't exist yet
+    dest_folder = "chunks"
     if not os.path.exists(dest_folder):
         os.mkdir(dest_folder)
     else:
@@ -42,7 +43,7 @@ def split(source, dest_folder):
     fn, file_extension = os.path.splitext(source)
     f.set_filename(fn)
     f.set_extension(file_extension)
-    
+
     # Open the source file in binary mode
     input_file = open(source, 'rb')
  
@@ -77,7 +78,6 @@ def split(source, dest_folder):
     result = writeToSharedDictionary(f)
     
     #sendRequest(f)
-    print(1)
     
     # Return the number of files created by the split
     return partnum
@@ -91,8 +91,7 @@ def join(requested_file):
     except KeyError:
         print("File Not Found")
         return
-    
-    print("No More Prints")
+
     # Get a list of the file parts
     parts = f.get_parts()
 
@@ -128,6 +127,7 @@ def join(requested_file):
     output_file.close()
 
 
-# split("sample.txt", "chunks")
+# parts = split("sample.txt")
+# print("File Split into " , parts)
 # time.sleep(5)
-join("sample")
+# join("sample")
