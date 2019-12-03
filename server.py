@@ -32,6 +32,7 @@ def api_root():
         app.logger.info("saving {}".format(saved_path))
         img.save(saved_path)
         worker.enqueue_request_queue(img.filename,"write")
+        # worker.blockThread()
         return make_response(jsonify({"success":True,"filename":img.filename}),200)
     else:
         return "Where is the image?"

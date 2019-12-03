@@ -7,11 +7,12 @@ chunksize = 1000
 
 def readSharedDictionary():
     try:
-        fp = open("shared.pkl","r")
-        return pickle.load(fp)
+        fName = os.getcwd()+"/shared.pkl"
+        with open(fName,'rb') as fp:
+            return pickle.load(fp)
     except IOError:
         shared = {}
-        fp = open("shared.pkl","w")
+        fp = open(os.getcwd()+"/shared.pkl","wb")
         pickle.dump(shared, fp)
         return shared
 
@@ -19,16 +20,24 @@ def writeToSharedDictionary(f):
     try:
         shared = readSharedDictionary()
         shared[f.filename] = f
-        fp = open("shared.pkl","w")
+        fp = open(os.getcwd()+"/shared.pkl","wb")
         pickle.dump(shared, fp)
         return 1
     except IOError:
         return 0
 
 def split(source):
+    # print("testing")
+    #create Dictionary Object
     f = fileObject(source)
+    prefix, fn = os.path.split(source)
+    fn, ext = os.path.splitext(fn)
+    f.set_filename(fn)
+    f.set_extension(ext)
+    
+    
     # Make a destination folder if it doesn't exist yet
-    dest_folder = "chunks"
+    dest_folder = os.getcwd()+"/chunks/"+fn+"/"
     if not os.path.exists(dest_folder):
         os.mkdir(dest_folder)
     else:
@@ -39,10 +48,8 @@ def split(source):
     partnum = 0
     f.set_size(os.path.getsize(source))
     
-    #create Dictionary Object
-    fn, file_extension = os.path.splitext(source)
-    f.set_filename(fn)
-    f.set_extension(file_extension)
+    
+    
 
     # Open the source file in binary mode
     input_file = open(source, 'rb')
@@ -58,8 +65,9 @@ def split(source):
         # Increment partnum
         partnum += 1
         
-        # Create a new file name
-        filename = os.path.join(dest_folder, fn+'_part_'+str(partnum))
+        # Create a new file name 
+        filename = os.path.join(dest_folder, 'part_'+str(partnum))
+        print("filename==",filename,fn)
         f.add_part(filename)
 
         # Create a destination file
@@ -75,12 +83,12 @@ def split(source):
     input_file.close()
 
     # write to a common file
-    result = writeToSharedDictionary(f)
+    writeToSharedDictionary(f)
     
     #sendRequest(f)
     
     # Return the number of files created by the split
-    return partnum
+    return f.filename
  
  
 def join(requested_file):

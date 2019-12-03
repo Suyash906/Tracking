@@ -3,7 +3,7 @@ from queue import Queue
 #import Document
 import time
 import os
-
+import main
 
 def handleCreateFileRequest(q):
 	while True:
@@ -18,13 +18,15 @@ def handleCreateFileRequest(q):
 			print(statinfo.st_size) #it shows in bytes
 			if statinfo.st_size > 500:
 				chunk_queue.put(t)
-			else: forward_queue.put(t)
+			else:
+				forward_queue.put(t)
 		q.task_done()
-
+	
+ 
 def handleChunkFileRequest(q):
 	while True:
 		print("Getting an element from Chunk queue: ")
-		print(q.get())
+		main.split(os.getcwd() + "/uploads/"+q.get()[0])
 		q.task_done()
 
 def handleForwardFileRequest(q):
@@ -32,6 +34,11 @@ def handleForwardFileRequest(q):
 		print("Getting an element from Forward queue: ")
 		print(q.get())
 		q.task_done()
+  
+def blockThread():
+    request_worker.join()
+    chunk_worker.join()
+    forward_worker.join()
 
 def testing():
 	print("=====Request Queue=====")
@@ -147,3 +154,5 @@ forward_worker = Thread(target=handleForwardFileRequest, args=(forward_queue,))
 forward_worker.start()
 
 # testing()
+
+# blockThread()
