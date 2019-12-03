@@ -6,6 +6,7 @@ class fileObject:
 
     def __init__(self, source):
         self.source = source
+        self.parts = []
 
     def __str__(self):
         return str(self.__class__) + ": " + str(self.__dict__)
@@ -27,3 +28,9 @@ class fileObject:
 
     def get_filename(self):
         return self.filename
+    
+    def get_parts(self):
+        return self.parts
+
+    def get_extension(self):
+        return self.extension

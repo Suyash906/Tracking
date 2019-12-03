@@ -1,8 +1,30 @@
 import os
 from fileObject import fileObject
+import pickle
 import time
 # constant chunk size
 chunksize = 10000
+
+def readSharedDictionary():
+    try:
+        fp = open("shared.pkl","r")
+        return pickle.load(fp)
+    except IOError:
+        shared = {}
+        fp = open("shared.pkl","w")
+        pickle.dump(shared, fp)
+        return shared
+
+def writeToSharedDictionary(f):
+    try:
+        shared = readSharedDictionary()
+        shared[f.filename] = f
+        fp = open("shared.pkl","w")
+        pickle.dump(shared, fp)
+        return 1
+    except IOError:
+        return 0
+
 def split(source, dest_folder):
     f = fileObject(source)
     # Make a destination folder if it doesn't exist yet
@@ -36,7 +58,7 @@ def split(source, dest_folder):
         partnum += 1
         
         # Create a new file name
-        filename = os.path.join(dest_folder, 'part'+str(partnum))
+        filename = os.path.join(dest_folder, fn+'_part_'+str(partnum))
         f.add_part(filename)
 
         # Create a destination file
@@ -50,17 +72,32 @@ def split(source, dest_folder):
      
     # Explicitly close
     input_file.close()
-    print(f)
+
+    # write to a common file
+    result = writeToSharedDictionary(f)
+    
+    #sendRequest(f)
+    print(1)
+    
     # Return the number of files created by the split
     return partnum
  
  
-def join(source_dir, dest_file):
-    # Create a new destination file
-    output_file = open(dest_file, 'wb')
-     
+def join(requested_file):
+    
+    shared = readSharedDictionary()
+    try:
+        f = shared[requested_file]    
+    except KeyError:
+        print("File Not Found")
+        return
+    
+    print("No More Prints")
     # Get a list of the file parts
-    parts = os.listdir(source_dir)
+    parts = f.get_parts()
+
+    # Create a new destination file
+    output_file = open("output/" + requested_file + f.get_extension(), 'wb')
      
     # Sort them by name (remember that the order num is part of the file name)
     parts.sort()
@@ -69,10 +106,10 @@ def join(source_dir, dest_file):
     for file in parts:
          
         # Assemble the full path to the file
-        path = os.path.join(source_dir, file)
+        #path = os.path.join(, file)
          
         # Open the part
-        input_file = open(path, 'rb')
+        input_file = open(file, 'rb')
          
         while True:
             # Read all bytes of the part
@@ -91,5 +128,6 @@ def join(source_dir, dest_file):
     output_file.close()
 
 
-split("sample.txt", "chunks")
-#join("chunks", "tttt")
+# split("sample.txt", "chunks")
+# time.sleep(5)
+join("sample")
