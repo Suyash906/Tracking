@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package chunkingProtos;
+
+service RequestManager {
+	rpc PostFileData (PostFileDataRequest) returns (PostFileDataResponse) {}
+	rpc GetFileData (GetFileDataRequest) returns (GetFileDataRequest) {}
+}
+
+message PostFileDataRequest {
+	string filename = 1;
+	string filebytes = 2;
+
+}
+
+message PostFileDataResponse {
+	bool success = 1;
+	string message = 2;
+}
+
+
+message GetFileDataRequest {
+	string filename = 1;
+	string node_ip = 2;
+}
+
+
+message GetFileDataRequest {
+	string filename = 1;
+	string filebytes = 2;
+	string node_ip = 3;	
+}
