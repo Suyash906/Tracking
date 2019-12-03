@@ -14,7 +14,7 @@ def handleCreateFileRequest(q):
 
 		if t[1] == "write":
 			cwd = os.getcwd()
-			statinfo = os.stat(cwd+ r"\uploads\somefile.pdf")
+			statinfo = os.stat(cwd + "/uploads/"+t[0])
 			print(statinfo.st_size) #it shows in bytes
 			if statinfo.st_size > 500:
 				chunk_queue.put(t)
@@ -130,7 +130,9 @@ def split(source, dest_folder, write_size):
      
     # Return the number of files created by the split
     return partnum
- 
+
+def enqueue_request_queue(filename, handle_type):
+	 request_queue.put((filename,handle_type))
 
 request_queue = Queue(maxsize=0)
 request_worker = Thread(target=handleCreateFileRequest, args=(request_queue,))
@@ -144,4 +146,4 @@ forward_queue = Queue(maxsize=0)
 forward_worker = Thread(target=handleForwardFileRequest, args=(forward_queue,))
 forward_worker.start()
 
-testing()
+# testing()
