@@ -1,1 +1,1 @@
-# CMPE 275 Project - Tracking Team
+# CMPE 275 Project
