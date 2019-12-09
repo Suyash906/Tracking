@@ -4,4 +4,5 @@ sample.txt
 __pycache__
 uploads/
 shared.pkl
+sharedIndex.pkl
 *.pyc

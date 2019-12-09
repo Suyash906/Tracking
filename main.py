@@ -47,9 +47,6 @@ def split(source):
 
     partnum = 0
     f.set_size(os.path.getsize(source))
-    
-    
-    
 
     # Open the source file in binary mode
     input_file = open(source, 'rb')
@@ -85,7 +82,7 @@ def split(source):
     # write to a common file
     writeToSharedDictionary(f)
     
-    #sendRequest(f)
+    #sendRequest(f)  #Add each to forward queue
     
     # Return the number of files created by the split
     return f.filename
