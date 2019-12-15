@@ -1,4 +1,12 @@
 
+### Install python virtual env:
+```
+  1.  python -m pip install virtualenv
+  2.  virtualenv venv
+  3.  source venv/bin/activate
+  4.  python -m pip install --upgrade pip
+```
+
 ### Package Installation
 ```
   1. pip install click   //(==6.7)
