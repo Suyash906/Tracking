@@ -18,5 +18,5 @@
   7. pip install Werkzeug   //(==0.12.2)
   8. pip install grpcio
   9. pip install grpcio-tools
-  10. pip install grpc
+  10. sudo pip install grpc
 ```
