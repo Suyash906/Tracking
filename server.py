@@ -5,6 +5,7 @@ from flask import jsonify, make_response
 import worker
 import time;
 import json;
+from hashlib import blake2b
 
 app = Flask(__name__)
 file_handler = logging.FileHandler('server.log')
@@ -14,7 +15,7 @@ app.logger.setLevel(logging.INFO)
 PROJECT_HOME = os.path.dirname(os.path.realpath(__file__))
 UPLOAD_FOLDER = '{}/uploads/'.format(PROJECT_HOME)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
+cacheItems = {}
 
 def create_new_folder(local_dir):
     newpath = local_dir
@@ -22,7 +23,7 @@ def create_new_folder(local_dir):
         os.makedirs(newpath)
     return newpath
 
-@app.route('/', methods = ['POST'])
+@app.route('/', methods = ['POST','GET'])
 def api_root():
     app.logger.info(PROJECT_HOME)
     if request.method == 'POST' and request.files['image']:
@@ -120,5 +121,17 @@ def getFile(fileId):
     else:
         return make_response(jsonify({"success":False,"error":"No File Present"}),501)
 
+def performCaching(parameter):
+    #get the file name, check if in dictionary
+    
+    h = blake2b(digest_size=20)
+    h.update(parameter.encode('utf-8'))
+    digest = h.hexdigest()
+    value  = cacheItems.get(digest, "X")
+    if value == "X": #ie not in cacheItems
+       cacheItems[digest] = "the value" #add to cache
+    else: #it is in cacheItems
+       a = 2 #to do 
+    print(cacheItems)
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=False, threaded = True)
