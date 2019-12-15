@@ -1,26 +1,26 @@
 from concurrent import futures
 import threading
 import grpc
-import upload_pb2
-import upload_pb2_grpc
+import storage_pb2
+import storage_pb2_grpc
 import time
 
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
-class Listener(upload_pb2_grpc.FileServerServicer):
+class Listener(storage_pb2_grpc.FileServerServicer):
     """The listener function implemests the rpc call as described in the .proto file"""
 
     def __init__(self):
         print('initialization')
 
-    def upload(self, request, context):
+    def upload_chunk_stream(self, request, context):
         for c in request:
-            print(c.content)
-        return upload_pb2.Reply(length = 1)
+            print(c.chunk)
+        return storage_pb2.ResponseBoolean(success = False)
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    upload_pb2_grpc.add_FileServerServicer_to_server(
+    storage_pb2_grpc.add_FileServerServicer_to_server(
         Listener(), server)
     server.add_insecure_port('[::]:9999')
     server.start()

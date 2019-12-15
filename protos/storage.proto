@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+service FileServer {
+    rpc upload_chunk_stream(stream ChunkRequest) returns (ResponseBoolean) {}
+    rpc upload_single_chunk(ChunkRequest) returns (ResponseBoolean) {}
+    rpc download_chunk_stream(HashIdRequest) returns (stream ChunkRequest) {}
+}
+
+message ChunkRequest {
+  bytes chunk = 1;
+}
+
+message HashIdRequest {
+  string hash_id = 1;
+}
+
+message ResponseBoolean {
+  bool success = 1;
+}
