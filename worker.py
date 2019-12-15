@@ -20,6 +20,9 @@ def handleCreateFileRequest(q):
 				chunk_queue.put(t)
 			else:
 				forward_queue.put(t)
+		if t[1] == "read":
+			fileRequested = t[0]
+			
 		q.task_done()
 	
  
