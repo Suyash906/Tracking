@@ -29,7 +29,8 @@ def api_root():
         app.logger.info(app.config['UPLOAD_FOLDER'])
         img = request.files['image']
         img_name = secure_filename(img.filename)
-        client = grpc_client.Client(roundrobin.getIpAddress())
+        # client = grpc_client.Client(roundrobin.getIpAddress())
+        client = grpc_client.Client("127.0.0.1:2750")
         client.upload(img, img_name)
         return make_response(jsonify({"success":True}),200)
     else:
@@ -46,7 +47,7 @@ def getFile():
             # Get the file from grpc using file ID from request
             
             hashedFileId = secure_filename(fileId)
-            client = grpc_client.Client(roundrobin.getIpAddress())
+            client = grpc_client.Client("127.0.0.1:2750")
             result = client.download(hashedFileId)
 
             #return file in bytes array to client in "content"
@@ -72,7 +73,6 @@ def addFile():
                 client = grpc_client.Client(roundrobin.getIpAddress())
                 client.upload(file, hashedFileId)
 
-                # variables2 = json.loads(s) # to convert back into dictionary
                 return make_response(jsonify({"success":True}),200)
         except Exception as e:
             print("EXCEPTION",e)
@@ -86,16 +86,14 @@ def addFile():
 def getMessage():
     if request.method == 'GET':
         messageId = request.args.get('messageId')
-
+        print("messageId--get--==", messageId)
         if messageId is None :
             return make_response(jsonify({"success":False,"error":"Content is Missing"}),501)
         else:
-            #Get the message from grpc using message ID from request
-            hashedMessageId = secure_filename(messageId)
-            client = grpc_client.Client(roundrobin.getIpAddress())
-            result = client.download(hashedMessageId)
-            result = result.decode("utf-8") 
-            return make_response(jsonify({"success":True, "message": "Hello", "messageId": messageId}),200)
+            # client = grpc_client.Client(roundrobin.getIpAddress())
+            client = grpc_client.Client("127.0.0.1:2750")
+            result = client.getMessage(messageId)
+            return make_response(jsonify({"success":True, "message": result, "messageId": messageId}),200)
     else:
         return make_response(jsonify({"success":False,"error":"No Message Present"}),501)
 
@@ -110,10 +108,15 @@ def addMessage():
             if messageId is None or message is None:
                 return make_response(jsonify({"success":False,"error":"Content is Missing !"}),501)
             else:
-                messageBytes = bytearray(message,'utf-8')
-                hashedMessageId = secure_filename(messageId)
-                client = grpc_client.Client(roundrobin.getIpAddress())
-                client.upload(messageBytes, hashedMessageId)
+                # messageBytes = bytearray(message,'utf-8')
+                # hashedMessageId = secure_filename(messageId)
+                # client = grpc_client.Client(roundrobin.getIpAddress())
+                # client.upload(messageBytes, hashedMessageId)
+                # client = grpc_client.Client(roundrobin.getIpAddress())
+                client = grpc_client.Client("127.0.0.1:2750")
+                print("message==", message)
+                print("messageId==", messageId)
+                client.sendMessage(message, messageId)
                 return make_response(jsonify({"success":True}),200)
         except Exception as e:
             print("EXCEPTION",e)
