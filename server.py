@@ -125,6 +125,11 @@ def addMessage():
             else:
                 # client = storage_client.Client(roundrobin.getIpAddress())
                 client = storage_client.Client("127.0.0.1:2750")
+                # messageBytes = bytearray(message,'utf-8')
+                # hashedMessageId = secure_filename(messageId)
+                # client = grpc_client.Client(roundrobin.getIpAddress())
+                # client.upload(messageBytes, hashedMessageId)
+                # client = grpc_client.Client(roundrobin.getIpAddress())
                 print("message==", message)
                 print("messageId==", messageId)
                 client.sendMessage(message, messageId)
