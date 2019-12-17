@@ -53,10 +53,11 @@ def getFile():
             fileId = urllib.parse.unquote(fileId)
             
             hashedFileId = secure_filename(fileId)
-            print("FILE ID  :: ",fileId,hashedFileId);
+            print("FILE ID  :: ",fileId,hashedFileId)
             client = storage_client.Client("127.0.0.1:2750")
             result = client.download(hashedFileId)
-
+            if result is None:
+                return make_response(jsonify({"success":False,"error":"No such file Present"}),501)
             print("===============result==============")
             print(result)
 
@@ -84,7 +85,7 @@ def addFile():
                 # client = storage_client.Client(roundrobin.getIpAddress())
                 # client.upload(file, hashedFileId)
                 hashedFileId = secure_filename(fileId)
-                print("FILE ID  :: ",fileId,hashedFileId);
+                print("FILE ID  :: ",fileId,hashedFileId)
                 client = storage_client.Client("127.0.0.1:2750")
                 success = client.upload(file, hashedFileId, fileSize)
 
@@ -108,6 +109,8 @@ def getMessage():
             # client = storage_client.Client(roundrobin.getIpAddress())
             client = storage_client.Client("127.0.0.1:2750")
             result = client.getMessage(messageId)
+            if result is None:
+                return make_response(jsonify({"success":False,"error":"No Message with this messageId is present"}),501)
             return make_response(jsonify({"success":True, "message": result, "messageId": messageId}),200)
     else:
         return make_response(jsonify({"success":False,"error":"No Message Present"}),501)
@@ -143,4 +146,4 @@ def addMessage():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=False)
+    app.run(host='0.0.0.0', debug=False,threaded=True)

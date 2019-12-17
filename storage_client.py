@@ -81,25 +81,33 @@ class Client:
     def download(self, f_name):
         hash_object = hashlib.sha1(f_name.encode())
         hex_dig = hash_object.hexdigest()
-        response = self.stub.download_chunk_stream(storage_pb2.HashIdRequest(hash_id=hex_dig))
-        print('==============response==============')
-        print(response)
-        # with open("./"+f_name,'wb') as f:
-        #     for c in response:
-        #         f.write(c.chunk)
-        file_bytes = bytearray()
-        for c in response:
-            file_bytes.extend(c.chunk)
-        file = file_bytes.decode()
-        return file
+        try:
+            response = self.stub.download_chunk_stream(storage_pb2.HashIdRequest(hash_id=hex_dig))
+            print('==============response==============')
+            print(response)
+            # with open("./"+f_name,'wb') as f:
+            #     for c in response:
+            #         f.write(c.chunk)
+            file_bytes = bytearray()
+            for c in response:
+                file_bytes.extend(c.chunk)
+            file = file_bytes.decode()
+            return file
+        except Exception as e:
+            # print("there was an error in download file")
+            return None
     
     def getMessage(self, messageId):
-        hash_object = hashlib.sha1(messageId.encode())
-        hex_dig = hash_object.hexdigest()
-        response = self.stub.download_chunk_stream(storage_pb2.HashIdRequest(hash_id=hex_dig))
-        print("response====",response)
-        message_bytes = bytearray()
-        for c in response:
-            message_bytes.extend(c.chunk)
-        message = message_bytes.decode()
-        return message
+        try:
+            hash_object = hashlib.sha1(messageId.encode())
+            hex_dig = hash_object.hexdigest()
+            response = self.stub.download_chunk_stream(storage_pb2.HashIdRequest(hash_id=hex_dig))
+            print("response====",response)
+            message_bytes = bytearray()
+            for c in response:
+                message_bytes.extend(c.chunk)
+            message = message_bytes.decode()
+            return message
+        except Exception as e:
+            # print("there was an error in get message")
+            return None
