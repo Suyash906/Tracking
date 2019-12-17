@@ -1,6 +1,6 @@
 import os;
 import pickle;
-ips = ["localhost:9999"]
+ips = ["127.0.0.1","10.0.0.3"]
 def readIndex():
     try:
         fName = os.getcwd()+"/sharedIndex.pkl"
