@@ -25,6 +25,7 @@ class TraversalClient:
         # response = self.stub.download_chunk_stream(storage_pb2.HashIdRequest(hash_id=hex_dig))
         request_id = uuid.uuid1()
         visited_ip = []
+        print("Calling receive rdata")
         response = self.stub.ReceiveData(
             traversal_pb2.ReceiveDataRequest(
                                 hash_id=hex_dig,
@@ -33,12 +34,12 @@ class TraversalClient:
                                 visited=str(visited_ip),
                                 requesting_node_ip=self.ip))
         print('==============response==============')
-        print(response)
+        print("response=", response.)
         # with open("./"+f_name,'wb') as f:
         #     for c in response:
-        #         f.write(c.chunk)
-        # file_bytes = bytearray()
-        # for c in response:
-        #     file_bytes.extend(c.chunk)
-        file = response.file_bytes.decode()
+        #         f.write(c.file_bytes)
+        file_bytes1 = bytearray()
+        for c in response:
+            file_bytes1.extend(c.file_bytes)
+        file = file_bytes1.decode()
         return file

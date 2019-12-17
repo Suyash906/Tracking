@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='traversal',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x0ftraversal.proto\x12\ttraversal\"u\n\x12ReceiveDataRequest\x12\x0f\n\x07hash_id\x18\x01 \x01(\t\x12\x12\n\nrequest_id\x18\x02 \x01(\t\x12\r\n\x05stack\x18\x03 \x01(\t\x12\x0f\n\x07visited\x18\x04 \x01(\t\x12\x1a\n\x12requesting_node_ip\x18\x05 \x01(\t\"\xb5\x01\n\x13ReceiveDataResponse\x12\x46\n\x06status\x18\x01 \x01(\x0e\x32\x36.traversal.ReceiveDataResponse.TraversalResponseStatus\x12\x12\n\nfile_bytes\x18\x02 \x01(\x0c\"B\n\x17TraversalResponseStatus\x12\t\n\x05\x46OUND\x10\x00\x12\r\n\tFORWARDED\x10\x01\x12\r\n\tNOT_FOUND\x10\x02\"l\n\x13ResponseDataRequest\x12\x12\n\nfile_bytes\x18\x01 \x01(\t\x12\x12\n\nrequest_id\x18\x02 \x01(\t\x12\x0f\n\x07node_ip\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\t\x12\x0c\n\x04path\x18\x05 \x01(\t\"\xa3\x01\n\x14ResponseDataResponse\x12G\n\x06status\x18\x01 \x01(\x0e\x32\x37.traversal.ResponseDataResponse.TraversalResponseStatus\"B\n\x17TraversalResponseStatus\x12\t\n\x05\x46OUND\x10\x00\x12\r\n\tFORWARDED\x10\x01\x12\r\n\tNOT_FOUND\x10\x02\"Q\n\x0fSendDataRequest\x12\x12\n\nfile_bytes\x18\x01 \x01(\x0c\x12\x12\n\nrequest_id\x18\x02 \x01(\t\x12\x16\n\x0e\x63lient_node_ip\x18\x03 \x01(\t\"\x12\n\x10SendDataResponse2\xee\x01\n\tTraversal\x12L\n\x0bReceiveData\x12\x1d.traversal.ReceiveDataRequest\x1a\x1e.traversal.ReceiveDataResponse\x12N\n\x0bRespondData\x12\x1e.traversal.ResponseDataRequest\x1a\x1f.traversal.ResponseDataResponse\x12\x43\n\x08SendData\x12\x1a.traversal.SendDataRequest\x1a\x1b.traversal.SendDataResponseb\x06proto3')
+  serialized_pb=_b('\n\x0ftraversal.proto\x12\ttraversal\"u\n\x12ReceiveDataRequest\x12\x0f\n\x07hash_id\x18\x01 \x01(\t\x12\x12\n\nrequest_id\x18\x02 \x01(\t\x12\r\n\x05stack\x18\x03 \x01(\t\x12\x0f\n\x07visited\x18\x04 \x01(\t\x12\x1a\n\x12requesting_node_ip\x18\x05 \x01(\t\"\xb5\x01\n\x13ReceiveDataResponse\x12\x46\n\x06status\x18\x01 \x01(\x0e\x32\x36.traversal.ReceiveDataResponse.TraversalResponseStatus\x12\x12\n\nfile_bytes\x18\x02 \x01(\x0c\"B\n\x17TraversalResponseStatus\x12\t\n\x05\x46OUND\x10\x00\x12\r\n\tFORWARDED\x10\x01\x12\r\n\tNOT_FOUND\x10\x02\"l\n\x13ResponseDataRequest\x12\x12\n\nfile_bytes\x18\x01 \x01(\t\x12\x12\n\nrequest_id\x18\x02 \x01(\t\x12\x0f\n\x07node_ip\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\t\x12\x0c\n\x04path\x18\x05 \x01(\t\"\xa3\x01\n\x14ResponseDataResponse\x12G\n\x06status\x18\x01 \x01(\x0e\x32\x37.traversal.ResponseDataResponse.TraversalResponseStatus\"B\n\x17TraversalResponseStatus\x12\t\n\x05\x46OUND\x10\x00\x12\r\n\tFORWARDED\x10\x01\x12\r\n\tNOT_FOUND\x10\x02\"Q\n\x0fSendDataRequest\x12\x12\n\nfile_bytes\x18\x01 \x01(\x0c\x12\x12\n\nrequest_id\x18\x02 \x01(\t\x12\x16\n\x0e\x63lient_node_ip\x18\x03 \x01(\t\"\x12\n\x10SendDataResponse2\xf2\x01\n\tTraversal\x12N\n\x0bReceiveData\x12\x1d.traversal.ReceiveDataRequest\x1a\x1e.traversal.ReceiveDataResponse0\x01\x12N\n\x0bRespondData\x12\x1e.traversal.ResponseDataRequest\x1a\x1f.traversal.ResponseDataResponse\x12\x45\n\x08SendData\x12\x1a.traversal.SendDataRequest\x1a\x1b.traversal.SendDataResponse(\x01\x62\x06proto3')
 )
 
 
@@ -398,7 +398,7 @@ _TRAVERSAL = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   serialized_start=713,
-  serialized_end=951,
+  serialized_end=955,
   methods=[
   _descriptor.MethodDescriptor(
     name='ReceiveData',
