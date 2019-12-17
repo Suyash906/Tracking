@@ -33,8 +33,8 @@ class TraversalClient:
                                 stack="",
                                 visited=str(visited_ip),
                                 requesting_node_ip=self.ip))
-        print('==============response==============')
-        print("response=", response.)
+        # print('==============response==============')
+        # print("response=", response.)
         # with open("./"+f_name,'wb') as f:
         #     for c in response:
         #         f.write(c.file_bytes)
