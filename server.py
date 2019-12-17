@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from flask import jsonify, make_response
 import roundrobin
 import storage_client
+import traversal_client
 import time
 import urllib
 
@@ -52,10 +53,10 @@ def getFile():
             # Get the file from grpc using file ID from request
             fileId = urllib.parse.unquote(fileId)
             
-            hashedFileId = secure_filename(fileId)
-            print("FILE ID  :: ",fileId,hashedFileId);
-            client = storage_client.Client("127.0.0.1:2750")
-            result = client.download(hashedFileId)
+            # hashedFileId = secure_filename(fileId)
+            # print("FILE ID  :: ",fileId,hashedFileId);
+            client = traversal_client.TraversalClient("127.0.0.1:2750", "127.0.0.1")
+            result = client.download(fileId)
 
             print("===============result==============")
             print(result)
@@ -83,10 +84,10 @@ def addFile():
                 # Send This to GRPC function
                 # client = storage_client.Client(roundrobin.getIpAddress())
                 # client.upload(file, hashedFileId)
-                hashedFileId = secure_filename(fileId)
-                print("FILE ID  :: ",fileId,hashedFileId);
+                #hashedFileId = secure_filename(fileId)
+                print("FILE ID  :: ",fileId);
                 client = storage_client.Client("127.0.0.1:2750")
-                success = client.upload(file, hashedFileId, fileSize)
+                success = client.upload(file, fileId, fileSize)
 
                 return make_response(jsonify({"success":True}),200)
         except Exception as e:

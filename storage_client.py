@@ -7,6 +7,7 @@ import math
 import sys
 import os
 import funcy
+import uuid
 
 CHUNK_SIZE = 1024 * 1024 * 3  # 3MB
 NO_OF_CHUNKS = 0
@@ -39,7 +40,7 @@ class Client:
         print("Inside here")
         hash_object = hashlib.sha1(f_name.encode())
         hex_dig = hash_object.hexdigest()
-        print(hex_dig)
+        print("hex_dig==",hex_dig)
 
         #data_size = len(f.read())
         # data_size = os.path.getsize("/Users/wamiqueansari/Downloads/tweet-unlike-icon.png")
@@ -64,7 +65,7 @@ class Client:
         messageBytes = str.encode(message)
         hash_object = hashlib.sha1(messageId.encode())
         hex_dig = hash_object.hexdigest()
-        print(hex_dig)
+        print("hex_dig==",hex_dig)
 
         # data_size = len(f.read())
         data_size = sys.getsizeof(messageBytes)
