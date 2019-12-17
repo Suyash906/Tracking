@@ -112,7 +112,7 @@ def getMesh():
     while True:
         # we have to change this to any random ip from the list
         try:
-            ip = "10.0.0.19"
+            ip = "10.0.0.9"
             recovery_channel = grpc.insecure_channel(ip + ":" + str(port))
             recovery_stub = recovery_pb2_grpc.RecoveryStub(recovery_channel)
             response = recovery_stub.sendWholeMesh(recovery_pb2.SendWholeMeshRequest())
@@ -129,7 +129,7 @@ def startRecoveryThread():
     global whole_mesh_dictionary
     while True:
         # print("Recovery",hole_dictionary)
-        if len(hole_dictionary) >=3:
+        if len(hole_dictionary) >=1:
             edge_ip = findEdgeNode(whole_mesh_dictionary)
             if edge_ip:
                 keys_hole_dictionary = list(d.hole_dictionary())
@@ -145,6 +145,15 @@ class RecoveryServer(recovery_pb2_grpc.RecoveryServicer):
 
     def __init__(self):
         print('Recovery server initialization')
+
+    def sendAdditionOfNodeMessage(self,request,context):
+        print("Inside sendAdditionOfNodeMessage")
+        pos = eval(request.pos)
+        ip = eval(request.ip)
+
+        whole_mesh_dictionary[pos] = ip
+
+        return recovery_pb2.AdditionalOfNodeReply()
 
     def sendHoleInfo(self, request, context):
         print("inside hole info method")
