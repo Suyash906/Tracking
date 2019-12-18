@@ -19,3 +19,10 @@
 ```
   python -m grpc_tools.protoc -I./protos --python_out=. --grpc_python_out=. ./protos/example.proto
 ```
+
+## Team Members
+1. [Divisha Bera](https://github.com/divishabera)
+2. [Suyash Srivastava](https://github.com/Suyash906)
+3. [Tosha Kamath](https://github.com/toshakamath)
+4. [Vinit Dholakia](https://github.com/vinitdholakia)
+5. [Wamique Ansari](https://github.com/wamiquem)
