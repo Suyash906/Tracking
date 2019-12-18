@@ -14,7 +14,7 @@ class TraversalStub(object):
     Args:
       channel: A grpc.Channel.
     """
-    self.ReceiveData = channel.unary_unary(
+    self.ReceiveData = channel.unary_stream(
         '/traversal.Traversal/ReceiveData',
         request_serializer=traversal__pb2.ReceiveDataRequest.SerializeToString,
         response_deserializer=traversal__pb2.ReceiveDataResponse.FromString,
@@ -24,7 +24,7 @@ class TraversalStub(object):
         request_serializer=traversal__pb2.ResponseDataRequest.SerializeToString,
         response_deserializer=traversal__pb2.ResponseDataResponse.FromString,
         )
-    self.SendData = channel.unary_unary(
+    self.SendData = channel.stream_unary(
         '/traversal.Traversal/SendData',
         request_serializer=traversal__pb2.SendDataRequest.SerializeToString,
         response_deserializer=traversal__pb2.SendDataResponse.FromString,
@@ -49,7 +49,7 @@ class TraversalServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def SendData(self, request, context):
+  def SendData(self, request_iterator, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -59,7 +59,7 @@ class TraversalServicer(object):
 
 def add_TraversalServicer_to_server(servicer, server):
   rpc_method_handlers = {
-      'ReceiveData': grpc.unary_unary_rpc_method_handler(
+      'ReceiveData': grpc.unary_stream_rpc_method_handler(
           servicer.ReceiveData,
           request_deserializer=traversal__pb2.ReceiveDataRequest.FromString,
           response_serializer=traversal__pb2.ReceiveDataResponse.SerializeToString,
@@ -69,7 +69,7 @@ def add_TraversalServicer_to_server(servicer, server):
           request_deserializer=traversal__pb2.ResponseDataRequest.FromString,
           response_serializer=traversal__pb2.ResponseDataResponse.SerializeToString,
       ),
-      'SendData': grpc.unary_unary_rpc_method_handler(
+      'SendData': grpc.stream_unary_rpc_method_handler(
           servicer.SendData,
           request_deserializer=traversal__pb2.SendDataRequest.FromString,
           response_serializer=traversal__pb2.SendDataResponse.SerializeToString,

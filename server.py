@@ -33,7 +33,7 @@ def api_root():
         img = request.files['image']
         img_name = secure_filename(img.filename)
         # client = storage_client.Client(roundrobin.getIpAddress())
-        client = storage_client.Client("127.0.0.1:2750")
+        client = storage_client.Client(roundrobin.getIpAddress()+":2750")
         client.upload(img, img_name)
         end = time.time()
         print("File size in bytes==", 119669)
@@ -52,11 +52,14 @@ def getFile():
         else:
             # Get the file from grpc using file ID from request
             fileId = urllib.parse.unquote(fileId)
-            
+        
             # hashedFileId = secure_filename(fileId)
             # print("FILE ID  :: ",fileId,hashedFileId);
-            client = traversal_client.TraversalClient("127.0.0.1:2750", "127.0.0.1")
+            ipaddress = roundrobin.getIpAddress()
+            client = traversal_client.TraversalClient(ipaddress+":2750", ipaddress)
             result = client.download(fileId)
+            if result is None:
+                return make_response(jsonify({"success":False,"error":"No such file Present"}),501)
 
             print("===============result==============")
             print(result)
@@ -85,8 +88,8 @@ def addFile():
                 # client = storage_client.Client(roundrobin.getIpAddress())
                 # client.upload(file, hashedFileId)
                 #hashedFileId = secure_filename(fileId)
-                print("FILE ID  :: ",fileId);
-                client = storage_client.Client("127.0.0.1:2750")
+                print("FILE ID  :: ",fileId)
+                client = storage_client.Client(roundrobin.getIpAddress()+":2750")
                 success = client.upload(file, fileId, fileSize)
 
                 return make_response(jsonify({"success":True}),200)
@@ -109,6 +112,8 @@ def getMessage():
             # client = storage_client.Client(roundrobin.getIpAddress())
             client = storage_client.Client("127.0.0.1:2750")
             result = client.getMessage(messageId)
+            if result is None:
+                return make_response(jsonify({"success":False,"error":"No Message with this messageId is present"}),501)
             return make_response(jsonify({"success":True, "message": result, "messageId": messageId}),200)
     else:
         return make_response(jsonify({"success":False,"error":"No Message Present"}),501)
@@ -125,7 +130,7 @@ def addMessage():
                 return make_response(jsonify({"success":False,"error":"Content is Missing !"}),501)
             else:
                 # client = storage_client.Client(roundrobin.getIpAddress())
-                client = storage_client.Client("127.0.0.1:2750")
+                client = storage_client.Client(roundrobin.getIpAddress()+":2750")
                 # messageBytes = bytearray(message,'utf-8')
                 # hashedMessageId = secure_filename(messageId)
                 # client = grpc_client.Client(roundrobin.getIpAddress())
@@ -144,4 +149,4 @@ def addMessage():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=False)
+    app.run(host='0.0.0.0', debug=False,threaded=True)
